@@ -76,13 +76,12 @@ public class Service_SendingMsg extends Service {
                         public void run() {
                             //do your stuff here
 //                            queryDatabaseForMessages = true;
-
                             doTheWholeThing();
 
                         }
                     });//
                     try {
-                        Thread.sleep(20000);
+                        Thread.sleep(30000); // 30 SECONDS
                     } catch (InterruptedException e) {
 //                        e.printStackTrace();
                     }

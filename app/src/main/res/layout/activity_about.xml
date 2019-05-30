@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_middle"
                 android:layout_marginRight="@dimen/spacing_middle"
-                android:text="Developer Info" />
+                android:text="DEVELOPER INFO" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
