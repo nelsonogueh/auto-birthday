@@ -120,7 +120,7 @@ public class Birthday extends AppCompatActivity {
 
             //Providing the element of an array by specifying its position
             messageBodyTV.setText(messagesBody.get(position));
-            BirthdayContactTV.setText(myComponent.getContactName(getApplicationContext(), myComponent.removeSpaceAndHyphen(messageContact.get(position))) + "\n" +"("+myComponent.removeSpaceAndHyphen(messageContact.get(position))+")");
+            BirthdayContactTV.setText(myComponent.getContactName(getApplicationContext(), myComponent.removeSpaceAndHyphen(messageContact.get(position))));
             birthDateTV.setText(SomeComponents.dateDaySuffix(birthDay.get(position)) + " " + SomeComponents.dateMonthName(birthdMonth.get(position)));
             return row;
         }

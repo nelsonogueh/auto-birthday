@@ -45,7 +45,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".9"
                             android:text="@string/about_auto_birthday"
-                            android:textColor="@color/grey_700" />
+                            android:textColor="@color/grey_700"
+                            android:textSize="@dimen/spacing_smlarge" />
 
                         <ImageView
                             android:layout_width="40dp"
@@ -65,14 +66,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:weightSum="2"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -86,7 +87,7 @@
                             android:id="@+id/birthdayContactTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0813597013745545415454515454545454545415454154541545"
+                            android:text="+2348135970137"
                             android:textColor="@color/grey_500"
                             android:textStyle="bold" />
                     </LinearLayout>

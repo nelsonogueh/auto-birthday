@@ -95,18 +95,12 @@ public class Service_SendingMsg extends Service {
     }
 
 
-    //TODO: Use shared preference to query if the table has been created first before trying to access the table
-
-
     public void doTheWholeThing() {
         sqlController = new SQLController(getApplicationContext());
 
         SomeComponents someComponents = new SomeComponents();
-
         String nowDay = someComponents.nowDateDay();
-
         String nowMonth = someComponents.nowDateMonth();
-
         String nowYear = someComponents.nowDateYear();
 
         db = openOrCreateDatabase(DBhelper.DB_NAME, MODE_PRIVATE, null);
@@ -123,21 +117,8 @@ public class Service_SendingMsg extends Service {
             String status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
 
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("RECIPIENT: ").append(theReceiverNumber);
-            stringBuilder.append("\n");
-            stringBuilder.append("MESSAGE: ").append(theMessageBody);
-            stringBuilder.append("\n");
-            stringBuilder.append("STATUS: ").append(status);
-            stringBuilder.append("\n");
-            stringBuilder.append("YEAR: ").append(theCurrentYear);
-            stringBuilder.append("\n");
-
-            Toast.makeText(Service_SendingMsg.this, stringBuilder, Toast.LENGTH_LONG).show();
-
-
-
-//                sendTextMessage(messageID,theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
+            // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
+            sendTextMessage(messageID, theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
 
             i++;
         }
@@ -163,22 +144,19 @@ public class Service_SendingMsg extends Service {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
 
-                        Log.i("", "---------------------------------------------------------------------------------------------------------------------------------------");
-                        Log.i("TEXT MESSAGE SENT", "TEXT MESSAGE HAS BEEN SENT TO: " + phoneNumber);
-//
+                        Toast.makeText(Service_SendingMsg.this, "Birthday message sent", Toast.LENGTH_LONG).show();
                         // UPDATE THE TABLE THAT THE MESSAGE HAS BEEN SENT
                         ContentValues contentValues = new ContentValues();
-                        contentValues.put(DBhelper.MESSAGE_SENDING_STATUS, "sent");
+                        contentValues.put(DBhelper.MESSAGE_SENDING_STATUS, DBhelper.SENDING_STATUS_SENT);
                         sqlController.updateTable(DBhelper.MESSAGE_SENDING_TABLE, contentValues, DBhelper.MESSAGE_SENDING_ID, sendingMessageRowId);
 
-
                         //TODO: After updating the table as sent, insert new messageSchedule for the user into the table. Note, note birthday schedule; just message schedule
-//                        In otherwords, messageBody, day, month, year = currentYear+1, same recipient etc.
+//                        In other words, messageBody, day, month, year = currentYear+1, same recipient etc.
 
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         // no airtime
-                        Log.i("", "---------------------------------------------------------------------------------------------------------------------------------------");
+                        Toast.makeText(Service_SendingMsg.this, "Not sent (Airtime issue)", Toast.LENGTH_LONG).show();
                         Log.i("NO AIRTIME", "SORRY YOU DON'T HAVE AIRTIME TO SEND MESSAGE");
 //                        updateSentMessagesTable(phoneNumber, smsBody, nowDateDay(), nowDateMonth(), nowDateYear());
 //                        Toast.makeText(context, "It seems you don't have airtime", Toast.LENGTH_SHORT).show();

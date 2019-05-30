@@ -91,7 +91,7 @@ public class SomeComponents extends AppCompatActivity {
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                contactName = cursor.getString(0);
+                contactName = cursor.getString(0)+"\n("+phoneNumber+")";
             } else {
                 contactName = phoneNumber;
             }

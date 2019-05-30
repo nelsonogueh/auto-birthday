@@ -80,46 +80,19 @@ public class SQLController {
         db.delete(DBhelper.SCHEDULED_BIRTHDAY_TABLE, DBhelper.SCHEDULED_ID + "=" + schedule_id, null);
     }
 
-/*
-    // INSERT INT SCHEDULE BIRTHDAY TABLE
-    public void insertNewScheduledBirthday(String phoneNumber, String day, String month, String sendingHour, String sendingMinute) {
 
-        ContentValues contentValue = new ContentValues();
-        contentValue.put(DBhelper.SCHEDULED_RECIPENT, phoneNumber);
-        contentValue.put(DBhelper.SCHEDULED_DAY, day);
-        contentValue.put(DBhelper.SCHEDULED_MONTH, month);
-        contentValue.put(DBhelper.SCHEDULED_SENDING_HOUR, sendingHour);
-        contentValue.put(DBhelper.SCHEDULED_SENDING_MINUTE, sendingMinute);
 
-        // Inserting the values into the scheduled birthday table
-        db.insert(DBhelper.SCHEDULED_BIRTHDAY_TABLE, null, contentValue);
-//        Log.d("DATABASE", "SCHEDULE VALUES INSERTED SUCCESSFULLY");
+
+
+    public void deleteItemFromTable(String tableName, String primaryKeyColumnName, String rowValueID) {
+        DBhelper = new DBhelper(ourcontext);
+        db = DBhelper.getWritableDatabase();
+
+        db.delete(tableName, primaryKeyColumnName + "=" + rowValueID, null);
+        // Example below
+//        db.delete(DBhelper.SCHEDULED_BIRTHDAY_TABLE, DBhelper.SCHEDULED_ID + "=" + schedule_id, null);
     }
 
-    */
-
-
-
-    // INSERT INTO MESSAGE SENDING TABLE
-  /*
-    public void insertNewMessageSending(String recipient, String messageBody, String messageDay, String messageMonth, String sendingHour, String sendingMinute, String messageStatus, String messageYear) {
-
-        ContentValues contentValue = new ContentValues();
-        contentValue.put(DBhelper.MESSAGE_SENDING_RECIPENT, recipient);
-        contentValue.put(DBhelper.MESSAGE_SENDING_BODY, messageBody);
-        contentValue.put(DBhelper.MESSAGE_SENDING_DAY, messageDay);
-        contentValue.put(DBhelper.MESSAGE_SENDING_MONTH, messageMonth);
-        contentValue.put(DBhelper.MESSAGE_SENDING_HOUR, sendingHour);
-        contentValue.put(DBhelper.MESSAGE_SENDING_MINUTE, sendingMinute);
-        contentValue.put(DBhelper.MESSAGE_SENDING_STATUS, messageStatus);
-        contentValue.put(DBhelper.MESSAGE_SENDING_YEAR, messageYear);
-
-        // Inserting the values into the scheduled birthday table
-        db.insert(DBhelper.MESSAGE_SENDING_TABLE, null, contentValue);
-//        Log.d("DATABASE", "MESSAGE SENDING VALUES INSERTED SUCCESSFULLY");
-    }
-
-    */
 
 
 
