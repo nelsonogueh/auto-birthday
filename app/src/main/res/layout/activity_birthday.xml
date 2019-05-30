@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dulceprime.specialwishes.activity.Birthday">
+
     <ListView
-        android:divider="@color/whiteColor"
-        android:scrollbars="none"
         android:id="@+id/scheduledBirthdayLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp" />
+        android:divider="@color/whiteColor"
+        android:dividerHeight="0dp"
+        android:scrollbars="none" />
 
 </android.support.constraint.ConstraintLayout>

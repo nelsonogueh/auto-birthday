@@ -110,8 +110,8 @@ public class Service_SendingMsg extends Service {
         String nowYear = someComponents.nowDateYear();
 
         db = openOrCreateDatabase(DBhelper.DB_NAME, MODE_PRIVATE, null);
-//        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "' AND " + DBhelper.MESSAGE_SENDING_STATUS + " = 'unsent' ", null);
-        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "'", null);
+
+        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "' AND " + DBhelper.MESSAGE_SENDING_STATUS + " = '" + DBhelper.SENDING_STATUS_UNSENT + "'", null);
 
         int i = 1;
         while (c.moveToNext()) {
@@ -120,12 +120,22 @@ public class Service_SendingMsg extends Service {
             String theReceiverNumber = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
             String theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
             String theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
+            String status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
 
-            Toast.makeText(Service_SendingMsg.this, "There's birthday today \n" + "Receiver: " + theReceiverNumber + "\nMessage: " + theMessageBody, Toast.LENGTH_LONG).show();
 
-            Log.d("RECIPIENT " + i, theReceiverNumber);
-            Log.d("MESSAGE BODY " + i, theMessageBody);
-            Log.d("STATUS " + i, c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS)));
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("RECIPIENT: ").append(theReceiverNumber);
+            stringBuilder.append("\n");
+            stringBuilder.append("MESSAGE: ").append(theMessageBody);
+            stringBuilder.append("\n");
+            stringBuilder.append("STATUS: ").append(status);
+            stringBuilder.append("\n");
+            stringBuilder.append("YEAR: ").append(theCurrentYear);
+            stringBuilder.append("\n");
+
+            Toast.makeText(Service_SendingMsg.this, stringBuilder, Toast.LENGTH_LONG).show();
+
+
 
 //                sendTextMessage(messageID,theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
 

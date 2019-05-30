@@ -257,7 +257,7 @@ public class AddEvent extends AppCompatActivity {
         contentValue.put(DBhelper.MESSAGE_SENDING_MONTH, SomeComponents.finalBirthMonth);
         contentValue.put(DBhelper.MESSAGE_SENDING_HOUR, SomeComponents.finalSendingTimeHour);
         contentValue.put(DBhelper.MESSAGE_SENDING_MINUTE, SomeComponents.finalSendingTimeMinute);
-        contentValue.put(DBhelper.MESSAGE_SENDING_STATUS, "unsent");
+        contentValue.put(DBhelper.MESSAGE_SENDING_STATUS, DBhelper.SENDING_STATUS_UNSENT);
         contentValue.put(DBhelper.MESSAGE_SENDING_YEAR, myComponent.nowDateYear());
 
         db.insertNewRecord(DBhelper.MESSAGE_SENDING_TABLE, contentValue);
