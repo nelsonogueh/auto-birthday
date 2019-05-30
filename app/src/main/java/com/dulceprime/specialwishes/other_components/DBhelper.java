@@ -15,6 +15,7 @@ public class DBhelper extends SQLiteOpenHelper {
 
     public static final String SENDING_STATUS_SENT = "sent";
     public static final String SENDING_STATUS_UNSENT = "unsent";
+    public static final String SENDING_STATUS_ATTEMPTED = "attempted";
 
     /**
      * SCHEDULED BIRTHDAY TABLE
