@@ -121,6 +121,7 @@ public class Service_SendingMsg extends Service {
             String theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
             String theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
 
+            Toast.makeText(Service_SendingMsg.this, "There's birthday today \n" + "Receiver: " + theReceiverNumber + "\nMessage: " + theMessageBody, Toast.LENGTH_LONG).show();
 
             Log.d("RECIPIENT " + i, theReceiverNumber);
             Log.d("MESSAGE BODY " + i, theMessageBody);

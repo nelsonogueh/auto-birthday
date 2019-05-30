@@ -80,14 +80,9 @@ public class SQLController {
         db.delete(DBhelper.SCHEDULED_BIRTHDAY_TABLE, DBhelper.SCHEDULED_ID + "=" + schedule_id, null);
     }
 
-
+/*
     // INSERT INT SCHEDULE BIRTHDAY TABLE
     public void insertNewScheduledBirthday(String phoneNumber, String day, String month, String sendingHour, String sendingMinute) {
-       /* phoneNumber = DatabaseUtils.sqlEscapeString(phoneNumber);
-        day = DatabaseUtils.sqlEscapeString(day);
-        month = DatabaseUtils.sqlEscapeString(month);
-        sendingHour = DatabaseUtils.sqlEscapeString(sendingHour);
-        sendingMinute = DatabaseUtils.sqlEscapeString(sendingMinute);*/
 
         ContentValues contentValue = new ContentValues();
         contentValue.put(DBhelper.SCHEDULED_RECIPENT, phoneNumber);
@@ -101,17 +96,13 @@ public class SQLController {
 //        Log.d("DATABASE", "SCHEDULE VALUES INSERTED SUCCESSFULLY");
     }
 
+    */
+
+
 
     // INSERT INTO MESSAGE SENDING TABLE
+  /*
     public void insertNewMessageSending(String recipient, String messageBody, String messageDay, String messageMonth, String sendingHour, String sendingMinute, String messageStatus, String messageYear) {
-        /*recipient = DatabaseUtils.sqlEscapeString(recipient);
-        messageBody = DatabaseUtils.sqlEscapeString(messageBody);
-        messageDay = DatabaseUtils.sqlEscapeString(messageDay);
-        messageMonth = DatabaseUtils.sqlEscapeString(messageMonth);
-        sendingHour = DatabaseUtils.sqlEscapeString(sendingHour);
-        sendingMinute = DatabaseUtils.sqlEscapeString(sendingMinute);
-        messageStatus = DatabaseUtils.sqlEscapeString(messageStatus);
-        messageYear = DatabaseUtils.sqlEscapeString(messageYear);*/
 
         ContentValues contentValue = new ContentValues();
         contentValue.put(DBhelper.MESSAGE_SENDING_RECIPENT, recipient);
@@ -126,6 +117,21 @@ public class SQLController {
         // Inserting the values into the scheduled birthday table
         db.insert(DBhelper.MESSAGE_SENDING_TABLE, null, contentValue);
 //        Log.d("DATABASE", "MESSAGE SENDING VALUES INSERTED SUCCESSFULLY");
+    }
+
+    */
+
+
+
+    // INSERT NEW RECORD TABLE
+    public void insertNewRecord(String tableName, ContentValues columnAndValues) {
+        DBhelper = new DBhelper(ourcontext);
+        db = DBhelper.getWritableDatabase();
+
+//        ContentValues contentValue = new ContentValues();
+//        contentValue.put(DBhelper.SCHEDULED_RECIPENT, phoneNumber);
+
+        db.insert(tableName, null, columnAndValues);
     }
 
 

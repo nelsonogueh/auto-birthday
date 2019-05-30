@@ -3,6 +3,7 @@ package com.dulceprime.specialwishes.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
@@ -20,8 +21,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.app.DialogFragment;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.dulceprime.specialwishes.R;
+import com.dulceprime.specialwishes.other_components.DBhelper;
 import com.dulceprime.specialwishes.other_components.SQLController;
 import com.dulceprime.specialwishes.other_components.SomeComponents;
 
@@ -233,11 +236,34 @@ public class AddEvent extends AppCompatActivity {
             return;
         }
 
-        // SUBMIT INFORMATION TO DB IF VALIDATION SUCCESSFUL
-        db.insertNewScheduledBirthday(SomeComponents.finalPhoneNumber, SomeComponents.finalBirthDay, SomeComponents.finalBirthMonth, myComponent.nowDateYear(), SomeComponents.finalSendingTimeHour);
-        db.insertNewMessageSending(SomeComponents.finalPhoneNumber,SomeComponents.finalMessageBody,SomeComponents.finalBirthDay, SomeComponents.finalBirthMonth,SomeComponents.finalSendingTimeHour,SomeComponents.finalSendingTimeMinute,"unsent",myComponent.nowDateYear());
+        // INSERT TO SCHEDULED BIRTHDAY TABLE
+        ContentValues contentValue2 = new ContentValues();
+        contentValue2.put(DBhelper.SCHEDULED_RECIPENT, SomeComponents.finalPhoneNumber);
+        contentValue2.put(DBhelper.SCHEDULED_DAY, SomeComponents.finalBirthDay);
+        contentValue2.put(DBhelper.SCHEDULED_MONTH, SomeComponents.finalBirthMonth);
+        contentValue2.put(DBhelper.SCHEDULED_YEAR, myComponent.nowDateYear());
+        contentValue2.put(DBhelper.SCHEDULED_SENDING_HOUR, SomeComponents.finalSendingTimeHour);
+        contentValue2.put(DBhelper.SCHEDULED_SENDING_MINUTE, SomeComponents.finalSendingTimeMinute);
 
-        myComponent.showSnackbarMessage(parentLayout, "Birthday scheduled successfully!");
+        // Inserting the values into the scheduled birthday table
+        db.insertNewRecord(DBhelper.SCHEDULED_BIRTHDAY_TABLE, contentValue2);
+
+
+        // INSERT INTO MESSAGE SENDING TABLE
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DBhelper.MESSAGE_SENDING_RECIPENT, SomeComponents.finalPhoneNumber);
+        contentValue.put(DBhelper.MESSAGE_SENDING_BODY, SomeComponents.finalMessageBody);
+        contentValue.put(DBhelper.MESSAGE_SENDING_DAY, SomeComponents.finalBirthDay);
+        contentValue.put(DBhelper.MESSAGE_SENDING_MONTH, SomeComponents.finalBirthMonth);
+        contentValue.put(DBhelper.MESSAGE_SENDING_HOUR, SomeComponents.finalSendingTimeHour);
+        contentValue.put(DBhelper.MESSAGE_SENDING_MINUTE, SomeComponents.finalSendingTimeMinute);
+        contentValue.put(DBhelper.MESSAGE_SENDING_STATUS, "unsent");
+        contentValue.put(DBhelper.MESSAGE_SENDING_YEAR, myComponent.nowDateYear());
+
+        db.insertNewRecord(DBhelper.MESSAGE_SENDING_TABLE, contentValue);
+
+//        myComponent.showSnackbarMessage(parentLayout, "Birthday scheduled successfully!");
+        Toast.makeText(AddEvent.this, "Birthday scheduled successfully!", Toast.LENGTH_SHORT).show();
 
         // MAKING THE VARIABLES EMPTY AFTER INSERTING TO DB
         SomeComponents.finalPhoneNumber = ""; //        SomeComponents.finalBirthMonth = ""; //
