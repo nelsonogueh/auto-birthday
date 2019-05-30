@@ -34,10 +34,9 @@ public class DBhelper extends SQLiteOpenHelper {
     // SENDING MESSAGE TABLE NAME
     public static final String MESSAGE_SENDING_TABLE = "message_sending";
     // Declaring the field for SENDING MESSAGE TABLE COLUMNS
-    public static final String MESSAGE_SENDING_ID = "message_sending_id", MESSAGE_SENDING_RECIPENT = "message_recipient", MESSAGE_SENDING_BODY = "message_body", MESSAGE_SENDING_HOUR = "message_time_hour", MESSAGE_SENDING_MINUTE = "message_time_minute", MESSAGE_SENDING_STATUS = "message_status", MESSAGE_SENDING_YEAR = "message_year",  MESSAGE_SENDING_DATE_SENT = "message_sent_time",  MESSAGE_SENDING_DAY = "message_birth_day",  MESSAGE_SENDING_MONTH = "message_birth_month";
+    public static final String MESSAGE_SENDING_ID = "message_sending_id", MESSAGE_SENDING_RECIPENT = "message_recipient", MESSAGE_SENDING_BODY = "message_body", MESSAGE_SENDING_HOUR = "message_time_hour", MESSAGE_SENDING_MINUTE = "message_time_minute", MESSAGE_SENDING_STATUS = "message_status", MESSAGE_SENDING_YEAR = "message_year", MESSAGE_SENDING_DATE_SENT = "message_sent_time", MESSAGE_SENDING_DAY = "message_birth_day", MESSAGE_SENDING_MONTH = "message_birth_month";
     // Creating scheduled birthday table query
     private static final String CREATE_MESSAGE_SENDING_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_SENDING_TABLE + "(" + MESSAGE_SENDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + MESSAGE_SENDING_RECIPENT + " VARCHAR, " + MESSAGE_SENDING_BODY + " LONGTEXT, " + MESSAGE_SENDING_HOUR + " VARCHAR, " + MESSAGE_SENDING_MINUTE + " VARCHAR, " + MESSAGE_SENDING_STATUS + " VARCHAR, " + MESSAGE_SENDING_YEAR + " VARCHAR," + MESSAGE_SENDING_DATE_SENT + " VARCHAR," + MESSAGE_SENDING_DAY + " VARCHAR," + MESSAGE_SENDING_MONTH + " VARCHAR)";
-
 
 
     public DBhelper(Context context) {

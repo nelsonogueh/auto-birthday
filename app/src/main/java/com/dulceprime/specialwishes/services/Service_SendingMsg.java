@@ -45,7 +45,7 @@ public class Service_SendingMsg extends Service {
 
     SQLController sqlController;
 
-    boolean queryDatabaseForMessages = false;
+//    boolean queryDatabaseForMessages = false;
 
 
     @Override
@@ -75,12 +75,12 @@ public class Service_SendingMsg extends Service {
                         @Override
                         public void run() {
                             //do your stuff here
-                            queryDatabaseForMessages = true;
+//                            queryDatabaseForMessages = true;
 
                             doTheWholeThing();
 
                         }
-                    });
+                    });//
                     try {
                         Thread.sleep(20000);
                     } catch (InterruptedException e) {
@@ -103,44 +103,48 @@ public class Service_SendingMsg extends Service {
         String nowDay = someComponents.nowDateDay();
         String nowMonth = someComponents.nowDateMonth();
         String nowYear = someComponents.nowDateYear();
+        String nowHour = someComponents.nowDateHour();
+        String nowMinute = someComponents.nowDateMinute();
 
         db = openOrCreateDatabase(DBhelper.DB_NAME, MODE_PRIVATE, null);
 
         // QUERY UNSENT MESSAGES
-        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "' AND " + DBhelper.MESSAGE_SENDING_STATUS + " = '" + DBhelper.SENDING_STATUS_UNSENT + "'", null);
+        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "'", null);
 
         if (c.moveToNext()) {
 //            Toast.makeText(Service_SendingMsg.this, "Birthday Present Today", Toast.LENGTH_LONG).show();
-            if (queryDatabaseForMessages) { // Send the messages one after the other (No while loop). Use defined Thread sleep interval
-                String messageID = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_ID));
-                String theReceiverNumber = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
-                String theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
-                String theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
-                String status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
+            // Send the messages one after the other (No while loop). Use defined Thread sleep interval
+            String messageID = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_ID));
+            String theReceiverNumber = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
+            String theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
+            String theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
+            String status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
+            String sendingHour = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_HOUR));
+            String sendingMinute = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_MINUTE));
+//
+
+            // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
+            if (status.equalsIgnoreCase(DBhelper.SENDING_STATUS_UNSENT) || status.equalsIgnoreCase(DBhelper.SENDING_STATUS_ATTEMPTED)) {
+                // If there is either unsent or attempted message status on db table
+                if (sendingHour.length() > 1) { // The user set time to send the message
+
+                    int dbHour = Integer.parseInt(sendingHour);
+                    int dbMinute = Integer.parseInt(sendingMinute);
+                    int deviceHour = Integer.parseInt(nowHour);
+                    int deviceMinute = Integer.parseInt(nowMinute);
 
 
-                // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
-                sendTextMessage(messageID, theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
-            }
-        }
-        else{ // If we've attempted sending before and it failed for one reason or the other
-            // QUERY FOR MESSAGES WITH STATUS "ATTEMPTED"
-            Cursor cursorAttempted = db.rawQuery("SELECT * FROM " + DBhelper.MESSAGE_SENDING_TABLE + " WHERE " + DBhelper.MESSAGE_SENDING_MONTH + " = '" + nowMonth + "' AND " + DBhelper.MESSAGE_SENDING_DAY + " = '" + nowDay + "' AND " + DBhelper.MESSAGE_SENDING_STATUS + " = '" + DBhelper.SENDING_STATUS_ATTEMPTED + "'", null);
-
-            if (cursorAttempted.moveToNext()) {
-//                Toast.makeText(Service_SendingMsg.this, "Birthday Present Today", Toast.LENGTH_LONG).show();
-                if (queryDatabaseForMessages) { // Send the messages one after the other (No while loop). Use defined Thread sleep interval
-                    String messageID = cursorAttempted.getString(cursorAttempted.getColumnIndex(DBhelper.MESSAGE_SENDING_ID));
-                    String theReceiverNumber = cursorAttempted.getString(cursorAttempted.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
-                    String theMessageBody = cursorAttempted.getString(cursorAttempted.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
-                    String theCurrentYear = cursorAttempted.getString(cursorAttempted.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
-                    String status = cursorAttempted.getString(cursorAttempted.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
-
-                    // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
+                    if ((deviceHour >= dbHour) && (deviceMinute >= dbMinute)) {
+                        // Don't send the message before time; but you can send it after the time.
+                        sendTextMessage(messageID, theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
+                    } else {
+                        // What to do before the time
+                    }
+                } else {
+                    // User did not set time to send message
                     sendTextMessage(messageID, theReceiverNumber, theMessageBody);  // This sends the text message to the phone number and updates the table
                 }
             }
-
         }
         c.close();
 
@@ -172,7 +176,6 @@ public class Service_SendingMsg extends Service {
 
                         //TODO: After updating the table as sent, insert new messageSchedule for the user into the table. Note, note birthday schedule; just message schedule
 //                        In other words, messageBody, day, month, year = currentYear+1, same recipient etc.
-
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         // no airtime

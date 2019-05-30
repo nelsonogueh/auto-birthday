@@ -70,6 +70,16 @@ public class SomeComponents extends AppCompatActivity {
         Date now = new Date();
         return simpleDateFormat.format(now);
     }
+    public String nowDateHour() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+        Date now = new Date();
+        return simpleDateFormat.format(now);
+    }
+    public String nowDateMinute() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm");
+        Date now = new Date();
+        return simpleDateFormat.format(now);
+    }
 
     public String dateFullType() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
