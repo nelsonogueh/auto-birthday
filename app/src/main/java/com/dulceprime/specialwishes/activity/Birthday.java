@@ -38,6 +38,7 @@ public class Birthday extends AppCompatActivity {
     List<String> messageContactDB;
     List<String> birthDayDB;
     List<String> birthdMonthDB;
+    List<String> sendingYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class Birthday extends AppCompatActivity {
 
 
         messageLV = (ListView) findViewById(R.id.scheduledBirthdayLV);
-        MyMessageAdapter messageAdapter = new MyMessageAdapter(getApplicationContext(), messagesBodyDB, messageContactDB, birthDayDB, birthdMonthDB);
+        MyMessageAdapter messageAdapter = new MyMessageAdapter(getApplicationContext(), messagesBodyDB, messageContactDB, birthDayDB, birthdMonthDB, sendingYear);
         messageLV.setAdapter(messageAdapter);
     }
 
@@ -61,6 +62,7 @@ public class Birthday extends AppCompatActivity {
         messageContactDB = new ArrayList<String>();
         birthDayDB = new ArrayList<String>();
         birthdMonthDB = new ArrayList<String>();
+        sendingYear = new ArrayList<String>();
 
 
         DBhelper dBhelper = new DBhelper(this);
@@ -75,6 +77,7 @@ public class Birthday extends AppCompatActivity {
             messageContactDB.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT)));
             birthDayDB.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_DAY)));
             birthdMonthDB.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_MONTH)));
+            sendingYear.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR)));
         }
 
         c.close();
@@ -87,10 +90,11 @@ public class Birthday extends AppCompatActivity {
         List<String> messageContact;
         List<String> birthDay;
         List<String> birthdMonth;
+        List<String> sendingYearr;
 
         SomeComponents myComponent;
 
-        private MyMessageAdapter(Context context, List<String> messagesBody, List<String> contactPhoneNumber, List<String> birthday, List<String> birthMonth) {
+        private MyMessageAdapter(Context context, List<String> messagesBody, List<String> contactPhoneNumber, List<String> birthday, List<String> birthMonth, List<String> messageSendingYear) {
             //Overriding Default Constructor off ArratAdapter
             super(context, R.layout.activity_birthday_row, messagesBody);
 
@@ -98,6 +102,7 @@ public class Birthday extends AppCompatActivity {
             this.messageContact = contactPhoneNumber;
             this.birthDay = birthday;
             this.birthdMonth = birthMonth;
+            this.sendingYearr = messageSendingYear;
         }
 
         @NonNull
@@ -118,7 +123,7 @@ public class Birthday extends AppCompatActivity {
             //Providing the element of an array by specifying its position
             messageBodyTV.setText(messagesBody.get(position));
             BirthdayContactTV.setText(myComponent.getContactName(getApplicationContext(), myComponent.removeSpaceAndHyphen(messageContact.get(position))));
-            birthDateTV.setText(SomeComponents.dateDaySuffix(birthDay.get(position)) + " " + SomeComponents.dateMonthName(birthdMonth.get(position)));
+            birthDateTV.setText(SomeComponents.dateDaySuffix(birthDay.get(position)) + " " + SomeComponents.dateMonthName(birthdMonth.get(position)) + " " + sendingYearr.get(position));
             return row;
         }
     }
