@@ -134,7 +134,7 @@ public class Service_SendingMsg extends Service {
             // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
             if (status.equalsIgnoreCase(DBhelper.SENDING_STATUS_UNSENT) || status.equalsIgnoreCase(DBhelper.SENDING_STATUS_ATTEMPTED)) {
                 // If there is either unsent or attempted message status on db table
-                if (sendingHour.length() > 1) { // The user set time to send the message
+                if (sendingHour.trim().length() > 0) { // The user set time to send the message
 
                     int dbHour = Integer.parseInt(sendingHour);
                     int dbMinute = Integer.parseInt(sendingMinute);
