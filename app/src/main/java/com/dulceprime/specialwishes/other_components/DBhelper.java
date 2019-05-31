@@ -49,8 +49,32 @@ public class DBhelper extends SQLiteOpenHelper {
     public static final String MESSAGE_SENDING_TABLE = "message_sending";
     // Declaring the field for SENDING MESSAGE TABLE COLUMNS
     public static final String MESSAGE_SENDING_ID = "message_sending_id", MESSAGE_SENDING_RECIPENT = "message_recipient", MESSAGE_SENDING_BODY = "message_body", MESSAGE_SENDING_HOUR = "message_time_hour", MESSAGE_SENDING_MINUTE = "message_time_minute", MESSAGE_SENDING_STATUS = "message_status", MESSAGE_SENDING_YEAR = "message_year", MESSAGE_SENDING_DATE_SENT = "message_sent_time", MESSAGE_SENDING_DAY = "message_birth_day", MESSAGE_SENDING_MONTH = "message_birth_month";
+
     // Creating scheduled birthday table query
     private static final String CREATE_MESSAGE_SENDING_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_SENDING_TABLE + "(" + MESSAGE_SENDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + MESSAGE_SENDING_RECIPENT + " VARCHAR, " + MESSAGE_SENDING_BODY + " LONGTEXT, " + MESSAGE_SENDING_HOUR + " VARCHAR, " + MESSAGE_SENDING_MINUTE + " VARCHAR, " + MESSAGE_SENDING_STATUS + " VARCHAR, " + MESSAGE_SENDING_YEAR + " VARCHAR," + MESSAGE_SENDING_DATE_SENT + " VARCHAR," + MESSAGE_SENDING_DAY + " VARCHAR," + MESSAGE_SENDING_MONTH + " VARCHAR)";
+
+
+
+    /**
+     * ALREADY_SENT_HISTORY TABLE
+     **/
+    // ALREADY_SENT_HISTORY TABLE NAME
+    public static final String ALREADY_SENT_HISTORY_TABLE = "already_sent_history";
+    // Declaring the field for SENDING MESSAGE TABLE COLUMNS
+    public static final String HISTORY_ID = "history_sending_id", HISTORY_SENDING_RECIPENT = "history_message_recipient", HISTORY_SENDING_BODY = "history_message_body", HISTORY_SENDING_HOUR = "history_message_time_hour", HISTORY_SENDING_MINUTE = "history_message_time_minute", HISTORY_SENDING_STATUS = "history_message_status", HISTORY_SENDING_YEAR = "history_message_year", HISTORY_SENDING_DATE_SENT = "history_message_sent_time", HISTORY_SENDING_DAY = "history_message_birth_day", HISTORY_SENDING_MONTH = "history_message_birth_month";
+
+    // Creating scheduled birthday table query
+    private static final String CREATE_ALREADY_SENT_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + ALREADY_SENT_HISTORY_TABLE + "(" + HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + HISTORY_SENDING_RECIPENT + " VARCHAR, " + HISTORY_SENDING_BODY + " LONGTEXT, " + HISTORY_SENDING_HOUR + " VARCHAR, " + HISTORY_SENDING_MINUTE + " VARCHAR, " + HISTORY_SENDING_STATUS + " VARCHAR, " + HISTORY_SENDING_YEAR + " VARCHAR," + HISTORY_SENDING_DATE_SENT + " VARCHAR," + HISTORY_SENDING_DAY + " VARCHAR," + HISTORY_SENDING_MONTH + " VARCHAR)";
+
+
+
+
+
+
+
+
+
+
 
 
     public DBhelper(Context context) {
@@ -63,6 +87,7 @@ public class DBhelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SCHEDULED_BIRTHDAY_TABLE);
         db.execSQL(CREATE_MESSAGE_SENDING_TABLE);
         db.execSQL(CREATE_BIRTHDAY_MESSAGES_TABLE);
+        db.execSQL(CREATE_ALREADY_SENT_HISTORY_TABLE);
     }
 
     @Override
@@ -70,6 +95,7 @@ public class DBhelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SCHEDULED_BIRTHDAY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_SENDING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_SENDING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ALREADY_SENT_HISTORY_TABLE);
         onCreate(db);
     }
 }

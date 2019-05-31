@@ -36,6 +36,15 @@ public class Service_SendingMsg extends Service {
     private boolean isRunning = false;
 
 
+    String messageID = "";
+    String theReceiverNumber  = "";
+    String theMessageBody  = "";
+    String theCurrentYear  = "";
+    String status  = "";
+    String sendingHour  = "";
+    String sendingMinute  = "";
+
+
     SomeComponents myNewComponents;
     public SQLiteDatabase db;
     public SharedPreferences user_details;
@@ -81,7 +90,7 @@ public class Service_SendingMsg extends Service {
                         }
                     });//
                     try {
-                        Thread.sleep(30000); // 30 SECONDS
+                        Thread.sleep(60000); // 30 SECONDS
                     } catch (InterruptedException e) {
 //                        e.printStackTrace();
                     }
@@ -113,19 +122,19 @@ public class Service_SendingMsg extends Service {
         if (c.moveToNext()) {
 //            Toast.makeText(Service_SendingMsg.this, "Birthday Present Today", Toast.LENGTH_LONG).show();
             // Send the messages one after the other (No while loop). Use defined Thread sleep interval
-            String messageID = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_ID));
-            String theReceiverNumber = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
-            String theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
-            String theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
-            String status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
-            String sendingHour = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_HOUR));
-            String sendingMinute = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_MINUTE));
+             messageID = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_ID));
+             theReceiverNumber = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_RECIPENT));
+             theMessageBody = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_BODY));
+             theCurrentYear = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_YEAR));
+             status = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_STATUS));
+             sendingHour = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_HOUR));
+             sendingMinute = c.getString(c.getColumnIndex(DBhelper.MESSAGE_SENDING_MINUTE));
 //
 
             // SEND THE TEXT MESSAGE IF THERE'S VALUE TO SEND
             if (status.equalsIgnoreCase(DBhelper.SENDING_STATUS_UNSENT) || status.equalsIgnoreCase(DBhelper.SENDING_STATUS_ATTEMPTED)) {
                 // If there is either unsent or attempted message status on db table
-                if (sendingHour.length() > 1) { // The user set time to send the message
+                if (sendingHour.trim().length() > 0) { // The user set time to send the message
 
                     int dbHour = Integer.parseInt(sendingHour);
                     int dbMinute = Integer.parseInt(sendingMinute);
@@ -169,18 +178,44 @@ public class Service_SendingMsg extends Service {
 
                         Toast.makeText(Service_SendingMsg.this, "Birthday message sent", Toast.LENGTH_LONG).show();
                         // UPDATE THE TABLE THAT THE MESSAGE HAS BEEN SENT
+                        int currentYearInt = Integer.parseInt(theCurrentYear);
+                        int nextYear = (currentYearInt+1);  // Incrementing the year
+                        String newMessage = "";
+
+                        db = openOrCreateDatabase(DBhelper.DB_NAME, MODE_PRIVATE, null);
+                        Cursor c1 = db.rawQuery("SELECT * FROM " + DBhelper.BIRTHDAY_MESSAGES_TABLE + " ORDER BY RANDOM()", null);
+
+                        if (c1.moveToNext()) {
+//                            Toast.makeText(Service_SendingMsg.this, "Selected new message", Toast.LENGTH_SHORT).show();
+                            // Fetching a new message
+                            newMessage = c1.getString(c1.getColumnIndex(DBhelper.MESSAGE_BODY));
+                        }
+                        c1.close();
+                        db.close();
+
+
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(DBhelper.MESSAGE_SENDING_STATUS, DBhelper.SENDING_STATUS_SENT);
+                        contentValues.put(DBhelper.MESSAGE_SENDING_YEAR, nextYear+"");
+                        contentValues.put(DBhelper.MESSAGE_SENDING_BODY, newMessage);
+
                         sqlController.updateTable(DBhelper.MESSAGE_SENDING_TABLE, contentValues, DBhelper.MESSAGE_SENDING_ID, sendingMessageRowId);
 
-                        //TODO: After updating the table as sent, insert new messageSchedule for the user into the table. Note, note birthday schedule; just message schedule
-//                        In other words, messageBody, day, month, year = currentYear+1, same recipient etc.
 
+                        // INSERT INTO MESSAGE SENT HISTORY TABLE
+                            ContentValues contentValue2 = new ContentValues();
+                            contentValue2.put(DBhelper.HISTORY_ID, messageID);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_RECIPENT, theReceiverNumber);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_BODY, theMessageBody);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_YEAR, theCurrentYear);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_STATUS, status);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_HOUR, sendingHour);
+                            contentValue2.put(DBhelper.HISTORY_SENDING_MINUTE, sendingMinute);
 
-
-
+                            sqlController.insertNewRecord(DBhelper.ALREADY_SENT_HISTORY_TABLE, contentValue2);
 
                         break;
+
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         // no airtime
                         ContentValues contentValues2 = new ContentValues();

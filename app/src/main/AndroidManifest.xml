@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dulceprime.specialwishes">
+    package="com.dulceprime.specialwishes" android:versionCode="2" android:versionName="2.0">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -24,7 +24,8 @@
         <service
             android:name=".services.Service_SendingMsg"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
 
         <activity
