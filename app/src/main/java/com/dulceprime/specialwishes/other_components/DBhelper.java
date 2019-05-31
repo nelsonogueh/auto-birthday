@@ -28,6 +28,20 @@ public class DBhelper extends SQLiteOpenHelper {
     private static final String CREATE_SCHEDULED_BIRTHDAY_TABLE = "CREATE TABLE IF NOT EXISTS " + SCHEDULED_BIRTHDAY_TABLE + "(" + SCHEDULED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SCHEDULED_RECIPENT + " VARCHAR, " + SCHEDULED_DAY + " VARCHAR, " + SCHEDULED_MONTH + " VARCHAR, " + SCHEDULED_YEAR + " VARCHAR, " + SCHEDULED_SENDING_HOUR + " VARCHAR, " + SCHEDULED_SENDING_MINUTE + " VARCHAR)";
 
 
+
+
+
+// BIRTHDAY MESSAGES TABLE NAME
+    public static final String BIRTHDAY_MESSAGES_TABLE = "birthday_message";
+    // Declaring the field for BIRTHDAY MESSAGES TABLE COLUMNS
+    public static final String MESSAGE_ID = "Message_Id", MESSAGE_TYPE = "Message_Type", MESSAGE_BODY = "Message_Body", ONLINE_UNIQUE_ID = "Online_Unique_Id";
+    // Creating birthday messages table query
+    private static final String CREATE_BIRTHDAY_MESSAGES_TABLE = "CREATE TABLE IF NOT EXISTS " + BIRTHDAY_MESSAGES_TABLE + "(" + MESSAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + MESSAGE_TYPE + " VARCHAR, " + MESSAGE_BODY + " LONGTEXT, " + ONLINE_UNIQUE_ID + " VARCHAR)";
+
+//    BIRTHDAY_MESSAGES
+
+
+
     /**
      * SENDING MESSAGE TABLE
      **/
@@ -48,11 +62,13 @@ public class DBhelper extends SQLiteOpenHelper {
         // Creating the database tables
         db.execSQL(CREATE_SCHEDULED_BIRTHDAY_TABLE);
         db.execSQL(CREATE_MESSAGE_SENDING_TABLE);
+        db.execSQL(CREATE_BIRTHDAY_MESSAGES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + SCHEDULED_BIRTHDAY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_SENDING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_SENDING_TABLE);
         onCreate(db);
     }

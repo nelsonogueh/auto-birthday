@@ -34,19 +34,6 @@ public class SQLController {
         DBhelper.close();
     }
 
-/*
-    public Cursor fetchAllScheduledBirthday() {
-        String[] columns = new String[] { DBhelper._ID, DBhelper.TODO_SUBJECT,
-                DBhelper.TODO_DESC };
-        Cursor cursor = db.query(DBhelper.TABLE_NAME, columns, null,
-                null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
-*/
-
     public int updateScheduledBirthday(long schedule_id, String phoneNumber, String day, String month, String sendingHour, String sendingMinute) {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DBhelper.SCHEDULED_RECIPENT, phoneNumber);

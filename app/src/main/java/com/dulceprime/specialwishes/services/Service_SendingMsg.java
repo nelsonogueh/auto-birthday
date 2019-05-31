@@ -175,6 +175,11 @@ public class Service_SendingMsg extends Service {
 
                         //TODO: After updating the table as sent, insert new messageSchedule for the user into the table. Note, note birthday schedule; just message schedule
 //                        In other words, messageBody, day, month, year = currentYear+1, same recipient etc.
+
+
+
+
+
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         // no airtime

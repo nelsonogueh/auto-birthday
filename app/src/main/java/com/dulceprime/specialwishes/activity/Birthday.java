@@ -52,7 +52,6 @@ public class Birthday extends AppCompatActivity {
         messageLV = (ListView) findViewById(R.id.scheduledBirthdayLV);
         MyMessageAdapter messageAdapter = new MyMessageAdapter(getApplicationContext(), messagesBodyDB, messageContactDB, birthDayDB, birthdMonthDB);
         messageLV.setAdapter(messageAdapter);
-
     }
 
     public void fetchScheduledBirthdayMessages() {
@@ -63,8 +62,6 @@ public class Birthday extends AppCompatActivity {
         birthDayDB = new ArrayList<String>();
         birthdMonthDB = new ArrayList<String>();
 
-
-        // TODO: Get all the message from SQLite and set them to the List
 
         DBhelper dBhelper = new DBhelper(this);
         db = dBhelper.getWritableDatabase();

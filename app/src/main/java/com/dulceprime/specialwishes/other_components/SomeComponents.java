@@ -129,58 +129,6 @@ public class SomeComponents extends AppCompatActivity {
 
     }
 
-
-    public void sendTextMessageWithAirtime(final String phoneNumber, final String smsBody) {
-        // SEND SMS WITH AIRTIME
-        String SMS_SENT = "SMS_SENT";
-        String SMS_DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SMS_SENT), 0);
-        PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SMS_DELIVERED), 0);
-
-// When the SMS has been sent
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-
-                        Log.i("", "---------------------------------------------------------------------------------------------------------------------------------------");
-                        Log.i("TEXT MESSAGE SENT", "TEXT MESSAGE HAS BEEN SENT TO:_ " + phoneNumber);
-//                        updateSentMessagesTable(phoneNumber, smsBody, nowDateDay(), nowDateMonth(), nowDateYear());
-
-
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        // no airtime
-//                        Log.i("", "\n");
-                        Log.i("", "---------------------------------------------------------------------------------------------------------------------------------------");
-                        Log.i("NO AIRTIME", "SORRY YOU DON'T HAVE AIRTIME TO SEND MESSAGE");
-//                        updateSentMessagesTable(phoneNumber, smsBody, nowDateDay(), nowDateMonth(), nowDateYear());
-//                        Toast.makeText(context, "It seems you don't have airtime", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        // no service
-//                        Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-//                        Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        // network turned off
-//                        Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_SENT));
-
-// Get the default instance of SmsManager
-        SmsManager smsManager = SmsManager.getDefault();
-// Send a text based SMS
-        smsManager.sendTextMessage(phoneNumber, null, smsBody, sentPendingIntent, deliveredPendingIntent);
-    }
-
-
     public void sendTextMessageWithBulkSMSAPI(final String phoneNumber, final String smsBody) {
         // SEND SMS WITH BULK SMS API
 

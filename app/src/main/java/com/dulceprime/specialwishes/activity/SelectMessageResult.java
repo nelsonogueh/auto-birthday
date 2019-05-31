@@ -2,6 +2,8 @@ package com.dulceprime.specialwishes.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dulceprime.specialwishes.R;
+import com.dulceprime.specialwishes.other_components.DBhelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class SelectMessageResult extends AppCompatActivity {
     private ListView messageLV;
     List<String> messagesList;
     String requestType = null;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +55,20 @@ public class SelectMessageResult extends AppCompatActivity {
 
     public void fetchDBMessage() {
         messagesList = new ArrayList<String>();
-
         // Populating the List
-        messagesList.add("First birthday message");
-        messagesList.add("Second birthday message");
-        messagesList.add("Third birthday message");
-        messagesList.add("Forth birthday message");
+
+        DBhelper dBhelper = new DBhelper(this);
+        db = dBhelper.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + DBhelper.BIRTHDAY_MESSAGES_TABLE + " ORDER BY " + DBhelper.MESSAGE_ID + " DESC", null);
+
+        while (c.moveToNext()) {
+            // Populating the List
+            messagesList.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_BODY)));
+        }
+
+        c.close();
+        db.close();
+
 
         messageLV = (ListView) findViewById(R.id.messageLV);
         MyMessageAdapter messageAdapter = new MyMessageAdapter(getApplicationContext(), messagesList);

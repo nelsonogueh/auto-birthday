@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +50,7 @@ public class AddEvent extends AppCompatActivity {
     private SQLController db;
 
     ConstraintLayout parentLayout;
+    private SQLiteDatabase db1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,11 +302,18 @@ public class AddEvent extends AppCompatActivity {
     public ArrayList<String> fetchDBMessage() {
         messagesList = new ArrayList<String>();
 
-        // Populating the List
-        messagesList.add("First birthday message");
-        messagesList.add("Second birthday message");
-        messagesList.add("Third birthday message");
-        messagesList.add("Forth birthday message");
+        DBhelper dBhelper = new DBhelper(this);
+        db1 = dBhelper.getWritableDatabase();
+        Cursor c = db1.rawQuery("SELECT * FROM " + DBhelper.BIRTHDAY_MESSAGES_TABLE + " ORDER BY " + DBhelper.MESSAGE_ID + " DESC", null);
+
+        while (c.moveToNext()) {
+            // Populating the List
+            messagesList.add(c.getString(c.getColumnIndex(DBhelper.MESSAGE_BODY)));
+        }
+
+        c.close();
+        db1.close();
+
 
         return messagesList;
     }

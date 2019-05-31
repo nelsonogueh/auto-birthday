@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -28,6 +30,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.dulceprime.specialwishes.R;
+import com.dulceprime.specialwishes.other_components.DBhelper;
+import com.dulceprime.specialwishes.other_components.PrefManager;
 import com.dulceprime.specialwishes.utils.Tools;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,17 +46,27 @@ public class MainActivity extends AppCompatActivity {
     private FragmentHome fragmentHome;
     private FragmentProfile fragmentProfile;
     private FragmentHistory fragmentHistory;
+    private SQLiteDatabase db;
+    private PrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        db = openOrCreateDatabase(DBhelper.DB_NAME, MODE_PRIVATE, null);
+
+        // Checking for first time launch - before calling setContentView()
+        prefManager = new PrefManager(this);
+        if (prefManager.isFirstTimeLaunch()) {
+            // Insert the birthday messages to database
+//            insertBirthdayMessagessToDatabase();
+        }
 
         // STARTING THE SERVICE THAT SENDS THE MESSAGE
 //        WE STOP ANY ALREADY STARTED SERVICE FIRST
-        stopService(new Intent(getApplicationContext(),com.dulceprime.specialwishes.services.Service_SendingMsg.class));
-        startService(new Intent(getApplicationContext(),com.dulceprime.specialwishes.services.Service_SendingMsg.class));
+        stopService(new Intent(getApplicationContext(), com.dulceprime.specialwishes.services.Service_SendingMsg.class));
+        startService(new Intent(getApplicationContext(), com.dulceprime.specialwishes.services.Service_SendingMsg.class));
 
 
         // Initializing variables
@@ -101,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFragment(Fragment fragment) {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame_layout,fragment);
+        fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
     }
 
@@ -215,4 +229,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+
+
 }
