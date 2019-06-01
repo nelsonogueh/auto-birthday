@@ -155,7 +155,6 @@ public class Service_SendingMsg extends Service {
             }
         }
         c.close();
-
         db.close();
 
     }
