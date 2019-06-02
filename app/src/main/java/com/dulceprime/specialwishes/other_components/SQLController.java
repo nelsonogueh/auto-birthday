@@ -80,9 +80,6 @@ public class SQLController {
 //        db.delete(DBhelper.SCHEDULED_BIRTHDAY_TABLE, DBhelper.SCHEDULED_ID + "=" + schedule_id, null);
     }
 
-
-
-
     // INSERT NEW RECORD TABLE
     public void insertNewRecord(String tableName, ContentValues columnAndValues) {
         DBhelper = new DBhelper(ourcontext);
@@ -93,10 +90,6 @@ public class SQLController {
 
         db.insert(tableName, null, columnAndValues);
     }
-
-
-    //TODO: Use pass content value as an argument to the method that will update the table so that only what we want to update will be updated
-
 
     public ArrayList<String> getAllStoredMessagesFromDB() {
         Cursor c = db.rawQuery("SELECT * FROM system_birthday_message", null);
